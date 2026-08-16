@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROUTINE-2 TEST | YT-DREAMDOSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0a0f2b;
+    --navy2:#141c47;
+    --indigo:#1d2761;
+    --gold:#f2b705;
+    --amber:#ff7a29;
+    --green:#2fd48a;
+    --red:#ff4d5e;
+    --cream:#f6f1e4;
+    --dim:#aab0d6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(242,183,5,0.18), transparent 60%),
+      radial-gradient(900px 500px at 90% 110%, rgba(255,122,41,0.12), transparent 60%),
+      linear-gradient(180deg, var(--navy) 0%, var(--navy2) 100%);
+    color:var(--cream);
+    font-family:'Hind', sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-bottom:40px;
+  }
+  .watermark{
+    width:100%;
+    text-align:center;
+    background:linear-gradient(90deg, var(--amber), var(--gold));
+    color:#1a1200;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    letter-spacing:0.5px;
+    padding:10px 12px;
+    font-size:clamp(13px, 2.6vw, 18px);
+    box-shadow:0 4px 18px rgba(0,0,0,0.35);
+    position:sticky;
+    top:0;
+    z-index:50;
+    text-transform:uppercase;
+  }
+  .wrap{
+    width:100%;
+    max-width:720px;
+    padding:20px 16px 0;
+  }
+  /* ---------- START SCREEN ---------- */
+  .hero{
+    text-align:center;
+    padding:36px 10px 10px;
+  }
+  .hero h1{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    font-size:clamp(28px, 7vw, 44px);
+    margin:0 0 6px;
+    background:linear-gradient(90deg, var(--gold), var(--amber));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    text-shadow:0 0 40px rgba(242,183,5,0.25);
+  }
+  .hero p{color:var(--dim); font-size:16px; margin:4px 0;}
+  .badge-row{
+    display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:18px 0 26px;
+  }
+  .pill{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(242,183,5,0.35);
+    color:var(--cream);
+    padding:6px 14px;
+    border-radius:999px;
+    font-size:13px;
+  }
+  .name-input{
+    width:100%;
+    max-width:340px;
+    margin:0 auto 18px;
+    display:block;
+    padding:14px 16px;
+    border-radius:12px;
+    border:2px solid rgba(242,183,5,0.4);
+    background:rgba(255,255,255,0.05);
+    color:var(--cream);
+    font-size:16px;
+    font-family:'Hind', sans-serif;
+    text-align:center;
+  }
+  .name-input::placeholder{color:var(--dim);}
+  .btn{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:18px;
+    color:#1a1200;
+    background:linear-gradient(90deg, var(--gold), var(--amber));
+    border:none;
+    padding:15px 34px;
+    border-radius:14px;
+    cursor:pointer;
+    box-shadow:0 10px 30px rgba(255,122,41,0.35);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 14px 34px rgba(255,122,41,0.45);}
+  .btn:active{transform:translateY(0px) scale(0.98);}
+  .btn.secondary{
+    background:rgba(255,255,255,0.08);
+    color:var(--cream);
+    border:1px solid rgba(255,255,255,0.2);
+    box-shadow:none;
+  }
+  .center{text-align:center;}
+
+  /* ---------- QUIZ SCREEN ---------- */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    margin:14px 0 6px; gap:10px; flex-wrap:wrap;
+  }
+  .progress-wrap{flex:1; min-width:160px;}
+  .progress-label{font-size:12px; color:var(--dim); margin-bottom:5px; display:flex; justify-content:space-between;}
+  .progress-track{
+    height:8px; border-radius:6px; background:rgba(255,255,255,0.08); overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; background:linear-gradient(90deg, var(--gold), var(--amber));
+    border-radius:6px; transition:width .3s ease;
+  }
+  .score-box{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    background:rgba(47,212,138,0.12);
+    border:1px solid rgba(47,212,138,0.4);
+    color:var(--green);
+    padding:8px 14px;
+    border-radius:12px;
+    font-size:14px;
+    white-space:nowrap;
+  }
+
+  .timer-ring{
+    width:66px; height:66px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    margin:6px auto 2px;
+    position:relative;
+    background:conic-gradient(var(--gold) calc(var(--pct,100)*1%), rgba(255,255,255,0.08) 0);
+    transition:background .25s linear;
+  }
+  .timer-ring.warn{background:conic-gradient(var(--red) calc(var(--pct,100)*1%), rgba(255,255,255,0.08) 0);}
+  .timer-ring::before{
+    content:'';
+    position:absolute; inset:6px;
+    border-radius:50%;
+    background:var(--navy2);
+  }
+  .timer-num{
+    position:relative; z-index:2;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800; font-size:22px;
+  }
+  .timer-num.warn{color:var(--red);}
+
+  .tagline{
+    text-align:center;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:clamp(18px,4.6vw,24px);
+    color:var(--gold);
+    margin:10px 0 2px;
+    letter-spacing:0.3px;
+  }
+  .motivate{
+    text-align:center;
+    color:var(--dim);
+    font-size:14px;
+    margin:0 0 16px;
+    font-style:italic;
+  }
+
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    border:1px solid rgba(242,183,5,0.25);
+    border-radius:20px;
+    padding:22px 20px 24px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.35);
+  }
+  .qnum{
+    display:inline-block;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    color:#1a1200;
+    background:var(--gold);
+    padding:3px 12px;
+    border-radius:8px;
+    font-size:13px;
+    margin-bottom:12px;
+  }
+  .q-en{font-size:17px; font-weight:600; line-height:1.5; margin:0 0 6px;}
+  .q-hi{font-size:16px; color:var(--dim); line-height:1.6; margin:0 0 18px;}
+
+  .options{display:flex; flex-direction:column; gap:10px;}
+  .opt{
+    text-align:left;
+    background:rgba(255,255,255,0.045);
+    border:2px solid rgba(255,255,255,0.12);
+    color:var(--cream);
+    padding:13px 16px;
+    border-radius:12px;
+    font-size:15px;
+    cursor:pointer;
+    font-family:'Hind', sans-serif;
+    transition:border-color .15s ease, background .15s ease, transform .1s ease;
+    display:flex; gap:10px; align-items:flex-start;
+  }
+  .opt:hover{border-color:rgba(242,183,5,0.6); background:rgba(242,183,5,0.08);}
+  .opt .k{
+    font-family:'Baloo 2', sans-serif; font-weight:700;
+    background:rgba(255,255,255,0.1);
+    min-width:26px; height:26px; border-radius:7px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:14px; flex-shrink:0;
+  }
+  .opt.correct{
+    border-color:var(--green); background:rgba(47,212,138,0.15);
+  }
+  .opt.correct .k{background:var(--green); color:#08351f;}
+  .opt.wrong{
+    border-color:var(--red); background:rgba(255,77,94,0.15);
+  }
+  .opt.wrong .k{background:var(--red); color:#3a0509;}
+  .opt.disabled{cursor:default;}
+  .opt.faded{opacity:0.45;}
+
+  .feedback{
+    margin-top:18px;
+    padding:16px 16px;
+    border-radius:14px;
+    animation:pop .25s ease;
+  }
+  @keyframes pop{from{transform:scale(0.96); opacity:0;} to{transform:scale(1); opacity:1;}}
+  .feedback.correct{background:rgba(47,212,138,0.12); border:1px solid rgba(47,212,138,0.4);}
+  .feedback.wrong{background:rgba(255,77,94,0.12); border:1px solid rgba(255,77,94,0.4);}
+  .feedback h3{
+    margin:0 0 8px; font-family:'Baloo 2', sans-serif; font-size:20px;
+  }
+  .feedback.correct h3{color:var(--green);}
+  .feedback.wrong h3{color:var(--red);}
+  .feedback p{margin:4px 0; font-size:14px; line-height:1.55; color:var(--cream);}
+  .feedback .tip{color:var(--gold); font-weight:600; margin-top:8px;}
+
+  .next-row{display:flex; justify-content:center; margin-top:18px;}
+
+  /* ---------- SCOREBOARD ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(6,8,26,0.85);
+    display:flex; align-items:center; justify-content:center;
+    z-index:100; padding:16px;
+    backdrop-filter:blur(3px);
+  }
+  .board{
+    background:linear-gradient(180deg, var(--indigo), var(--navy2));
+    border:2px solid var(--gold);
+    border-radius:22px;
+    padding:30px 26px;
+    max-width:420px; width:100%;
+    text-align:center;
+    box-shadow:0 30px 80px rgba(0,0,0,0.6);
+  }
+  .board h2{
+    font-family:'Baloo 2', sans-serif; color:var(--gold); font-size:24px; margin:0 0 16px;
+  }
+  .board .stat-row{display:flex; justify-content:space-around; margin:18px 0;}
+  .stat{display:flex; flex-direction:column; gap:4px;}
+  .stat .num{font-family:'Baloo 2', sans-serif; font-size:28px; font-weight:800;}
+  .stat .lbl{font-size:12px; color:var(--dim);}
+  .stat.ok .num{color:var(--green);}
+  .stat.no .num{color:var(--red);}
+  .stat.acc .num{color:var(--gold);}
+  .board .comment{font-size:15px; margin:14px 0 20px; color:var(--cream);}
+
+  /* ---------- FINAL SCREEN ---------- */
+  .final h2{
+    font-family:'Baloo 2', sans-serif; font-size:clamp(24px,6vw,32px);
+    color:var(--gold); margin-bottom:6px;
+  }
+  .final .grade{
+    font-family:'Baloo 2', sans-serif; font-size:48px; font-weight:800; margin:14px 0;
+    background:linear-gradient(90deg, var(--gold), var(--amber));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+
+  footer{
+    margin-top:30px; color:var(--dim); font-size:12px; text-align:center; padding:0 16px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="watermark">🔥 YT-DREAMDOSE (ROUTINE-2 TEST) 🔥</div>
+
+<div class="wrap" id="app"></div>
+
+<footer>YT-DREAMDOSE · Bihar Police & Competitive Exam Prep</footer>
+
+<script>
+/* ================= QUESTION DATA ================= */
+const QUESTIONS = [
+{
+  en:"Regarding the expansion of the English East India Company, consider the following statements:\n1. Captain Thomas Best defeated the Portuguese navy in the Battle of Swally (1612), after which Jahangir permitted the English to open a factory in Surat.\n2. Sir Thomas Roe came to Emperor Jahangir's court as King James I's envoy and secured permission to set up factories across the Mughal Empire.\n3. In 1639 the English acquired Chandannagar on lease through officer Francis Day and built Fort St. George there.",
+  hi:"अंग्रेजी ईस्ट इंडिया कंपनी के विस्तार के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:\n1. कैप्टन थॉमस बेस्ट ने 1612 में स्वाली के युद्ध में पुर्तगाली नौसेना को पराजित किया, जिसके बाद जहांगीर ने अंग्रेजों को सूरत में फैक्ट्री खोलने की अनुमति दी।\n2. सर थॉमस रो ने सम्राट जहांगीर के दरबार में किंग जेम्स प्रथम के दूत के रूप में आकर पूरे मुगल साम्राज्य में कारखाने स्थापित करने की छूट प्राप्त की थी।\n3. अंग्रेजों ने 1639 में फ्रांसिस डे नामक अधिकारी के प्रयासों से चंद्रनगर को पट्टे पर लिया और वहाँ फोर्ट सेंट जॉर्ज का निर्माण किया।",
+  options:[
+    {en:"Only 1 and 2", hi:"केवल 1 और 2"},
+    {en:"Only 2 and 3", hi:"केवल 2 और 3"},
+    {en:"Only 1 and 3", hi:"केवल 1 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:0,
+  exp_en:"Statements 1 & 2 are correct. Statement 3 is wrong — the English actually acquired Madras (not Chandannagar) in 1639 through Francis Day and built Fort St. George there; Chandannagar was a French settlement.",
+  exp_hi:"कथन 1 और 2 सही हैं। कथन 3 गलत है — अंग्रेजों ने 1639 में फ्रांसिस डे के प्रयासों से मद्रास (चंद्रनगर नहीं) प्राप्त किया और वहाँ फोर्ट सेंट जॉर्ज बनाया; चंद्रनगर एक फ्रांसीसी बस्ती थी।"
+},
+{
+  en:"Regarding the Anglo-French conflict (Carnatic Wars), consider the following statements:\n1. The First Carnatic War ended with the 'Treaty of Aix-la-Chapelle' (1748), under which the English got Madras back.\n2. In the Second Carnatic War, French governor Dupleix was the first to adopt the policy of 'interfering in the internal disputes of Indian rulers' to boost French influence.\n3. During the Third Carnatic War, the French suffered their final defeat at the Battle of Wandiwash (1760) and British supremacy was established.",
+  hi:"आंग्ल-फ्रांसीसी संघर्ष (कर्नाटक युद्ध) के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:\n1. प्रथम कर्नाटक युद्ध की समाप्ति 'ऐ-ला-शापेल की संधि' (1748) से हुई, जिसके तहत अंग्रेजों को मद्रास वापस मिल गया।\n2. द्वितीय कर्नाटक युद्ध में फ्रांसीसी गवर्नर डुप्ले ने पहली बार 'भारतीय शासकों के आंतरिक विवादों में भाग लेने' की नीति अपनाई ताकि फ्रांसीसी प्रभाव बढ़ाया जा सके।\n3. तृतीय कर्नाटक युद्ध के दौरान 1760 में वांडीवाश के युद्ध में फ्रांसीसियों की अंतिम पराजय हुई और ब्रिटिश वर्चस्व स्थापित हो गया।",
+  options:[
+    {en:"Only 1 and 2", hi:"केवल 1 और 2"},
+    {en:"Only 2 and 3", hi:"केवल 2 और 3"},
+    {en:"Only 1 and 3", hi:"केवल 1 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:3,
+  exp_en:"All three statements are correct and accurately describe the three Carnatic Wars and their outcomes.",
+  exp_hi:"तीनों कथन सही हैं और तीनों कर्नाटक युद्धों तथा उनके परिणामों का सही वर्णन करते हैं।"
+},
+{
+  en:"Regarding the French East India Company in India, consider the following statements:\n1. The French Company (Compagnie des Indes Orientales) was established in 1664 through the efforts of Colbert, minister of King Louis XIV of France.\n2. The French established their first factory in India in 1668 at Masulipatnam under the leadership of François Caron.\n3. Francois Martin obtained a small village from the Subedar of Valikondapuram, which later developed as 'Pondicherry'.",
+  hi:"भारत में फ्रांसीसी ईस्ट इंडिया कंपनी के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:\n1. फ्रांसीसी कंपनी (Compagnie des Indes Orientales) की स्थापना 1664 में फ्रांस के राजा लुई चौदहवें के मंत्री कोलबर्ट (Colbert) के प्रयासों से हुई थी।\n2. फ्रांसीसियों ने भारत में अपनी पहली फैक्ट्री 1668 में फ्रैंकोइस कैरॉन के नेतृत्व में मसूलीपट्नम में स्थापित की थी।\n3. फ्रेंको मार्टिन ने वालिकोंडापुरम के सूबेदार से एक छोटा गाँव प्राप्त किया था, जो बाद में 'पांडिचेरी' के रूप में विकसित हुआ।",
+  options:[
+    {en:"Only 1 and 2", hi:"केवल 1 और 2"},
+    {en:"Only 1 and 3", hi:"केवल 1 और 3"},
+    {en:"Only 2 and 3", hi:"केवल 2 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:1,
+  exp_en:"Statements 1 & 3 are correct. Statement 2 is wrong — the first French factory was set up at Surat (1668), not Masulipatnam.",
+  exp_hi:"कथन 1 और 3 सही हैं। कथन 2 गलत है — फ्रांसीसियों की पहली फैक्ट्री सूरत (1668) में स्थापित हुई थी, मसूलीपट्नम में नहीं।"
+},
+{
+  en:"Regarding the Portuguese Empire in India, consider the following statements:\n1. Francisco de Almeida started the 'Blue Water Policy' to establish Portuguese naval supremacy in the Indian Ocean.\n2. Afonso de Albuquerque captured Goa from the Sultan of Bijapur in 1510, which later became the main centre of Portuguese power in India.",
+  hi:"भारत में पुर्तगाली साम्राज्य के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:\n1. फ्रांसिस्को डी अल्मीडा ने हिंद महासागर में पुर्तगाली नौसैनिक सर्वोच्चता स्थापित करने के उद्देश्य से 'ब्लू वॉटर पॉलिसी' की शुरुआत की थी।\n2. अल्फांसो डी अल्बुकर्क ने 1510 में बीजापुर के सुल्तान से गोवा छीन लिया, जो बाद में भारत में पुर्तगाली शक्ति का मुख्य केंद्र बना।",
+  options:[
+    {en:"Only 1", hi:"केवल 1"},
+    {en:"Only 2", hi:"केवल 2"},
+    {en:"Both 1 and 2", hi:"1 और 2 दोनों"},
+    {en:"Neither 1 nor 2", hi:"न तो 1 और न ही 2"}
+  ],
+  correct:2,
+  exp_en:"Both statements are historically accurate descriptions of Portuguese naval strategy and conquest of Goa.",
+  exp_hi:"दोनों कथन पुर्तगाली नौसैनिक रणनीति और गोवा विजय का सही वर्णन करते हैं।"
+},
+{
+  en:"Regarding the Dutch East India Company in India, consider the following statements:\n1. The Dutch established their first permanent commercial factory in 1605 at Masulipatnam on the Coromandel coast.\n2. After a decisive defeat in the 'Battle of Bedara' (1759) against the English, Dutch commercial and political ambitions in India ended completely.",
+  hi:"भारत में डच ईस्ट इंडिया कंपनी के संबंध में निम्नलिखित कथनों पर विचार कीजिए:\n1. डचों ने 1605 में कोरोमंडल तट पर स्थित मसूलीपट्नम में अपनी पहली स्थायी व्यावसायिक फैक्ट्री स्थापित की थी।\n2. 1759 में अंग्रेजों के साथ हुए 'बेदरा के युद्ध' में निर्णायक हार के बाद भारत में डचों की व्यावसायिक और राजनीतिक महत्वाकांक्षाएं पूरी तरह समाप्त हो गईं।",
+  options:[
+    {en:"Only 1", hi:"केवल 1"},
+    {en:"Only 2", hi:"केवल 2"},
+    {en:"Both 1 and 2", hi:"1 और 2 दोनों"},
+    {en:"Neither 1 nor 2", hi:"न तो 1 और न ही 2"}
+  ],
+  correct:2,
+  exp_en:"Both statements are correct — Masulipatnam (1605) was the Dutch's first factory, and the Battle of Bedara (1759) ended Dutch ambitions in India.",
+  exp_hi:"दोनों कथन सही हैं — मसूलीपट्नम (1605) डचों की पहली फैक्ट्री थी, और बेदरा के युद्ध (1759) ने भारत में डच महत्वाकांक्षाओं को समाप्त कर दिया।"
+},
+{
+  en:"Regarding the early attempts of the English East India Company (EIC), consider the following statements:\n1. Captain William Hawkins, during his mission in 1609, was completely successful in obtaining permission from Emperor Jahangir to build a permanent fortified factory at Surat.\n2. In 1632, the English obtained a 'Golden Farman' from the Sultan of Golconda, permitting them free trade at Golconda's ports in exchange for a fixed annual payment.",
+  hi:"अंग्रेजी ईस्ट इंडिया कंपनी (EIC) के शुरुआती प्रयासों के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:\n1. कैप्टन विलियम हॉकिन्स 1609 के अपने मिशन के दौरान सम्राट जहांगीर से सूरत में एक स्थायी किला बंद फैक्ट्री बनाने की अनुमति प्राप्त करने में पूरी तरह सफल रहा था।\n2. 1632 में अंग्रेजों ने गोलकुंडा के सुल्तान से एक 'सुनहरा फरमान' (Golden Farman) प्राप्त किया, जिसने उन्हें एक निश्चित वार्षिक भुगतान के बदले गोलकुंडा के बंदरगाहों पर मुफ्त व्यापार करने की अनुमति दी।",
+  options:[
+    {en:"Only 1", hi:"केवल 1"},
+    {en:"Only 2", hi:"केवल 2"},
+    {en:"Both 1 and 2", hi:"1 और 2 दोनों"},
+    {en:"Neither 1 nor 2", hi:"न तो 1 और न ही 2"}
+  ],
+  correct:1,
+  exp_en:"Statement 2 is correct. Statement 1 is wrong — Hawkins failed to secure permission for a fortified factory at Surat; the Portuguese opposition blocked it.",
+  exp_hi:"कथन 2 सही है। कथन 1 गलत है — हॉकिन्स सूरत में किला बंद फैक्ट्री की अनुमति प्राप्त करने में असफल रहा था; पुर्तगाली विरोध ने उसे रोक दिया।"
+},
+{
+  en:"Match List-I (European Trading Company) with List-II (their early/main settlements in India) and select the correct answer using the code below:",
+  hi:"सूची-I (यूरोपीय व्यापारिक कंपनी) को सूची-II (भारत में उनकी प्रारंभिक/मुख्य बस्तियाँ) से सुमेलित कीजिए और नीचे दिए गए कोड का उपयोग करके सही उत्तर चुनिए:",
+  matchTable:{
+    left:["A. Portuguese / पुर्तगाली","B. Dutch / डच","C. English / अंग्रेज","D. French / फ्रांसीसी"],
+    right:["1. Pulicat & Chinsura / पुलिकट और चिंसुरा","2. Cochin & Goa / कोचीन और गोवा","3. Pondicherry & Chandannagar / पांडिचेरी और चंद्रनगर","4. Surat & Madras / सूरत और मद्रास"]
+  },
+  options:[
+    {en:"A-1, B-2, C-4, D-3", hi:"A-1, B-2, C-4, D-3"},
+    {en:"A-2, B-1, C-4, D-3", hi:"A-2, B-1, C-4, D-3"},
+    {en:"A-2, B-1, C-3, D-4", hi:"A-2, B-1, C-3, D-4"},
+    {en:"A-3, B-4, C-1, D-2", hi:"A-3, B-4, C-1, D-2"}
+  ],
+  correct:1,
+  exp_en:"Portuguese: Cochin & Goa. Dutch: Pulicat & Chinsura. English: Surat & Madras. French: Pondicherry & Chandannagar.",
+  exp_hi:"पुर्तगाली: कोचीन और गोवा। डच: पुलिकट और चिंसुरा। अंग्रेज: सूरत और मद्रास। फ्रांसीसी: पांडिचेरी और चंद्रनगर।"
+},
+{
+  en:"Match List-I (Historic Battle) with List-II (its significance/related side) and select the correct answer:",
+  hi:"सूची-I (ऐतिहासिक युद्ध) को सूची-II (उसका महत्व / संबंधित पक्ष) से सुमेलित कीजिए और सही उत्तर चुनिए:",
+  matchTable:{
+    left:["A. Battle of Swally (1612)","B. Battle of Ambur (1749)","C. Battle of Bedara (1759)","D. Battle of Wandiwash (1760)"],
+    right:["1. Broke Portuguese naval monopoly; established English foothold","2. Decisive final defeat of French army by the English","3. Ended Dutch commercial ambitions in India","4. Related to Second Carnatic War (Dupleix's diplomacy)"]
+  },
+  options:[
+    {en:"A-3, B-4, C-2, D-1", hi:"A-3, B-4, C-2, D-1"},
+    {en:"A-4, B-3, C-1, D-2", hi:"A-4, B-3, C-1, D-2"},
+    {en:"A-3, B-4, C-1, D-2", hi:"A-3, B-4, C-1, D-2"},
+    {en:"A-2, B-1, C-4, D-3", hi:"A-2, B-1, C-4, D-3"}
+  ],
+  correct:2,
+  exp_en:"Swally (1612) broke Portuguese naval dominance; Ambur (1749) relates to the Second Carnatic War/Dupleix's diplomacy; Bedara (1759) ended Dutch ambitions; Wandiwash (1760) was the decisive English victory over the French.",
+  exp_hi:"स्वाली (1612) ने पुर्तगाली नौसैनिक प्रभुत्व तोड़ा; अंबूर (1749) द्वितीय कर्नाटक युद्ध/डुप्ले की कूटनीति से संबंधित है; बेदरा (1759) ने डच महत्वाकांक्षाओं को समाप्त किया; वांडीवाश (1760) फ्रांसीसियों पर अंग्रेजों की निर्णायक जीत थी।"
+},
+{
+  en:"Consider the following statements regarding Jog Falls:\n1. It is formed by the Sharavathi River.\n2. It is located in Karnataka.\n3. It is the highest plunge waterfall in India.",
+  hi:"जोग जलप्रपात के संबंध में निम्नलिखित कथनों पर विचार कीजिए:\n1. यह शरावती नदी पर स्थित है।\n2. यह कर्नाटक में स्थित है।\n3. यह भारत का सबसे ऊँचा प्लंज जलप्रपात है।",
+  options:[
+    {en:"1 and 2 only", hi:"केवल 1 और 2"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1 and 3 only", hi:"केवल 1 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:3,
+  exp_en:"All three statements about Jog Falls are correct — it's on the Sharavathi River in Karnataka and is India's highest plunge waterfall.",
+  exp_hi:"जोग जलप्रपात के बारे में तीनों कथन सही हैं — यह कर्नाटक में शरावती नदी पर है और भारत का सबसे ऊँचा प्लंज जलप्रपात है।"
+},
+{
+  en:"Match List-I (Waterfall) with List-II (State) and select the correct answer:",
+  hi:"सूची-I (जलप्रपात) का सूची-II (राज्य) से मिलान कीजिए तथा सही उत्तर चुनिए:",
+  matchTable:{
+    left:["A. Jog Falls","B. Athirappilly Falls","C. Nohkalikai Falls","D. Dudhsagar Falls"],
+    right:["1. Meghalaya","2. Karnataka","3. Kerala","4. Goa"]
+  },
+  options:[
+    {en:"A-2, B-3, C-1, D-4", hi:"A-2, B-3, C-1, D-4"},
+    {en:"A-3, B-2, C-4, D-1", hi:"A-3, B-2, C-4, D-1"},
+    {en:"A-2, B-1, C-3, D-4", hi:"A-2, B-1, C-3, D-4"},
+    {en:"A-4, B-3, C-1, D-2", hi:"A-4, B-3, C-1, D-2"}
+  ],
+  correct:0,
+  exp_en:"Jog Falls – Karnataka; Athirappilly Falls – Kerala; Nohkalikai Falls – Meghalaya; Dudhsagar Falls – Goa.",
+  exp_hi:"जोग जलप्रपात – कर्नाटक; अथिरापल्ली जलप्रपात – केरल; नोहकलिकाई जलप्रपात – मेघालय; दूधसागर जलप्रपात – गोवा।"
+},
+{
+  en:"Match List-I (Waterfall) with List-II (River) and select the correct answer:",
+  hi:"सूची-I (जलप्रपात) का सूची-II (नदी) से मिलान कीजिए तथा सही उत्तर चुनिए:",
+  matchTable:{
+    left:["A. Jog Falls","B. Dudhsagar Falls","C. Shivanasamudra Falls","D. Chitrakote Falls"],
+    right:["1. Mandovi","2. Sharavathi","3. Cauvery","4. Indravati"]
+  },
+  options:[
+    {en:"A-2, B-1, C-3, D-4", hi:"A-2, B-1, C-3, D-4"},
+    {en:"A-1, B-2, C-4, D-3", hi:"A-1, B-2, C-4, D-3"},
+    {en:"A-2, B-3, C-1, D-4", hi:"A-2, B-3, C-1, D-4"},
+    {en:"A-4, B-1, C-2, D-3", hi:"A-4, B-1, C-2, D-3"}
+  ],
+  correct:0,
+  exp_en:"Jog Falls – Sharavathi; Dudhsagar Falls – Mandovi; Shivanasamudra Falls – Cauvery; Chitrakote Falls – Indravati.",
+  exp_hi:"जोग जलप्रपात – शरावती; दूधसागर जलप्रपात – मांडवी; शिवानासमुद्र जलप्रपात – कावेरी; चित्रकोट जलप्रपात – इंद्रावती।"
+},
+{
+  en:"Match List-I (Nuclear Power Plant) with List-II (State) and select the correct answer:",
+  hi:"सूची-I (परमाणु ऊर्जा संयंत्र) का सूची-II (राज्य) से मिलान कीजिए तथा सही उत्तर चुनिए:",
+  matchTable:{
+    left:["A. Tarapur Atomic Power Station","B. Kakrapar Atomic Power Station","C. Rawatbhata Atomic Power Station","D. Kudankulam Nuclear Power Plant"],
+    right:["1. Rajasthan","2. Maharashtra","3. Gujarat","4. Tamil Nadu"]
+  },
+  options:[
+    {en:"A-2, B-3, C-1, D-4", hi:"A-2, B-3, C-1, D-4"},
+    {en:"A-3, B-2, C-4, D-1", hi:"A-3, B-2, C-4, D-1"},
+    {en:"A-2, B-1, C-3, D-4", hi:"A-2, B-1, C-3, D-4"},
+    {en:"A-4, B-3, C-1, D-2", hi:"A-4, B-3, C-1, D-2"}
+  ],
+  correct:0,
+  exp_en:"Tarapur – Maharashtra; Kakrapar – Gujarat; Rawatbhata – Rajasthan; Kudankulam – Tamil Nadu.",
+  exp_hi:"तारापुर – महाराष्ट्र; काकरापार – गुजरात; रावतभाटा – राजस्थान; कुडनकुलम – तमिलनाडु।"
+},
+{
+  en:"Match List-I (Nuclear Power Plant) with List-II (Location/District) and select the correct answer:",
+  hi:"सूची-I (परमाणु ऊर्जा संयंत्र) का सूची-II (स्थान/जिला) से मिलान कीजिए तथा सही उत्तर चुनिए:",
+  matchTable:{
+    left:["A. Narora Atomic Power Station","B. Kaiga Generating Station","C. Madras Atomic Power Station (Kalpakkam)","D. Kakrapar Atomic Power Station"],
+    right:["1. Chengalpattu (Tamil Nadu)","2. Bulandshahr (Uttar Pradesh)","3. Uttara Kannada (Karnataka)","4. Tapi (Gujarat)"]
+  },
+  options:[
+    {en:"A-2, B-3, C-1, D-4", hi:"A-2, B-3, C-1, D-4"},
+    {en:"A-3, B-2, C-4, D-1", hi:"A-3, B-2, C-4, D-1"},
+    {en:"A-2, B-1, C-3, D-4", hi:"A-2, B-1, C-3, D-4"},
+    {en:"A-4, B-3, C-2, D-1", hi:"A-4, B-3, C-2, D-1"}
+  ],
+  correct:0,
+  exp_en:"Narora – Bulandshahr (UP); Kaiga – Uttara Kannada (Karnataka); Madras Atomic (Kalpakkam) – Chengalpattu (TN); Kakrapar – Tapi (Gujarat).",
+  exp_hi:"नरोरा – बुलंदशहर (उ.प्र.); कैगा – उत्तर कन्नड़ (कर्नाटक); मद्रास परमाणु (कलपक्कम) – चेंगलपट्टु (त.ना.); काकरापार – तापी (गुजरात)।"
+},
+{
+  en:"Match List-I (Musical Instrument) with List-II (Player) and select the correct answer:",
+  hi:"सूची-I (वाद्य यंत्र) का सूची-II (वादक) से मिलान कीजिए तथा सही उत्तर चुनिए:",
+  matchTable:{
+    left:["A. Sitar","B. Santoor","C. Shehnai","D. Flute (Bansuri)"],
+    right:["1. Hariprasad Chaurasia","2. Bismillah Khan","3. Ravi Shankar","4. Shivkumar Sharma"]
+  },
+  options:[
+    {en:"A-3, B-4, C-2, D-1", hi:"A-3, B-4, C-2, D-1"},
+    {en:"A-4, B-3, C-1, D-2", hi:"A-4, B-3, C-1, D-2"},
+    {en:"A-3, B-2, C-4, D-1", hi:"A-3, B-2, C-4, D-1"},
+    {en:"A-2, B-4, C-3, D-1", hi:"A-2, B-4, C-3, D-1"}
+  ],
+  correct:0,
+  exp_en:"Sitar – Ravi Shankar; Santoor – Shivkumar Sharma; Shehnai – Bismillah Khan; Flute – Hariprasad Chaurasia.",
+  exp_hi:"सितार – रवि शंकर; संतूर – शिवकुमार शर्मा; शहनाई – बिस्मिल्लाह खान; बांसुरी – हरिप्रसाद चौरसिया।"
+},
+{
+  en:"Match List-I (Musical Instrument) with List-II (Player) and select the correct answer:",
+  hi:"सूची-I (वाद्य यंत्र) का सूची-II (वादक) से मिलान कीजिए तथा सही उत्तर चुनिए:",
+  matchTable:{
+    left:["A. Tabla","B. Sarod","C. Violin","D. Sarangi"],
+    right:["1. Amjad Ali Khan","2. Zakir Hussain","3. L. Subramaniam","4. Sultan Khan"]
+  },
+  options:[
+    {en:"A-2, B-1, C-3, D-4", hi:"A-2, B-1, C-3, D-4"},
+    {en:"A-1, B-2, C-4, D-3", hi:"A-1, B-2, C-4, D-3"},
+    {en:"A-2, B-3, C-1, D-4", hi:"A-2, B-3, C-1, D-4"},
+    {en:"A-4, B-1, C-2, D-3", hi:"A-4, B-1, C-2, D-3"}
+  ],
+  correct:0,
+  exp_en:"Tabla – Zakir Hussain; Sarod – Amjad Ali Khan; Violin – L. Subramaniam; Sarangi – Sultan Khan.",
+  exp_hi:"तबला – जाकिर हुसैन; सरोद – अमजद अली खान; वायलिन – एल. सुब्रमण्यम; सारंगी – सुल्तान खान।"
+},
+{
+  en:"Consider the following statements:\n1. The five-kingdom classification was proposed in 1969.\n2. It was proposed by R. H. Whittaker.\n3. It considers cell structure, nutrition, and ecological role.",
+  hi:"निम्नलिखित कथनों पर विचार कीजिए:\n1. 5-जगत वर्गीकरण 1969 में प्रस्तावित किया गया था।\n2. यह आर. एच. व्हिटेकर द्वारा प्रस्तावित किया गया था।\n3. यह कोशिका संरचना, पोषण और पारिस्थितिक भूमिका पर विचार करता है।",
+  options:[
+    {en:"1 and 2 only", hi:"केवल 1 और 2"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1 and 3 only", hi:"केवल 1 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:3,
+  exp_en:"All three statements are correct. R. H. Whittaker proposed the five-kingdom classification in 1969, based on cell structure, mode of nutrition, and ecological role.",
+  exp_hi:"तीनों कथन सही हैं। आर. एच. व्हिटेकर ने 1969 में कोशिका संरचना, पोषण के तरीके और पारिस्थितिक भूमिका के आधार पर 5-जगत वर्गीकरण प्रस्तावित किया था।"
+},
+{
+  en:"Consider the following statements regarding Monera:\n1. Members are prokaryotic.\n2. They lack membrane-bound organelles.\n3. All members are multicellular.\n4. Bacteria & Archaea come under Monera.",
+  hi:"मोनेरा (Monera) के संबंध में निम्नलिखित कथन:\n1. इसके सदस्य प्रोकैरियोटिक होते हैं।\n2. इनमें झिल्ली-बद्ध अंगों का अभाव होता है।\n3. इसके सभी सदस्य बहुकोशिकीय होते हैं।\n4. बैक्टीरिया और आर्किया मोनेरा के अंतर्गत आते हैं।",
+  options:[
+    {en:"1, 2 only", hi:"केवल 1, 2"},
+    {en:"1, 2 and 4 only", hi:"केवल 1, 2 और 4"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:1,
+  exp_en:"Statements 1, 2 & 4 are correct. Statement 3 is wrong — all members of Monera are unicellular, not multicellular.",
+  exp_hi:"कथन 1, 2 और 4 सही हैं। कथन 3 गलत है — मोनेरा के सभी सदस्य एककोशिकीय होते हैं, बहुकोशिकीय नहीं।"
+},
+{
+  en:"Consider the following statements about Protista:\n1. Protists are eukaryotic organisms.\n2. They are mostly unicellular.\n3. Common examples: Amoeba, Paramecium, Euglena, Plasmodium, Diatoms.\n4. All protists are photosynthetic.",
+  hi:"प्रोटिस्टा (Protista) के बारे में निम्नलिखित कथन:\n1. प्रोटिस्ट यूकैरियोटिक जीव हैं।\n2. ये मुख्य रूप से एककोशिकीय होते हैं।\n3. सामान्य उदाहरण: अमीबा, पैरामीशियम, यूग्लीना, प्लास्मोडियम, डायटम।\n4. सभी प्रोटिस्ट प्रकाश संश्लेषक होते हैं।",
+  options:[
+    {en:"1, 2, 4 only", hi:"केवल 1, 2, 4"},
+    {en:"2, 3 and 4 only", hi:"केवल 2, 3 और 4"},
+    {en:"1 and 3 only", hi:"केवल 1 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:3,
+  exp_en:"Statements 1, 2 & 3 are correct. Statement 4 is wrong — not all protists are photosynthetic; some are heterotrophic (e.g. Amoeba) or mixotrophic (e.g. Euglena).",
+  exp_hi:"कथन 1, 2 और 3 सही हैं। कथन 4 गलत है — सभी प्रोटिस्ट प्रकाश संश्लेषक नहीं होते; कुछ विषमपोषी (जैसे अमीबा) या मिश्रपोषी (जैसे यूग्लीना) होते हैं।"
+},
+{
+  en:"Consider the following statements about Fungi:\n1. Fungi are heterotrophic organisms.\n2. Their cell wall is made of chitin.\n3. They perform photosynthesis.\n4. Aflatoxins are highly toxic, produced by Fungi.",
+  hi:"कवक (Fungi) के बारे में निम्नलिखित कथन:\n1. कवक विषमपोषी जीव हैं।\n2. इनकी कोशिका भित्ति काइटिन की बनी होती है।\n3. ये प्रकाश संश्लेषण करते हैं।\n4. एफ्लाटॉक्सिन अत्यधिक विषैले होते हैं, जो कवक द्वारा निर्मित होते हैं।",
+  options:[
+    {en:"1 only", hi:"केवल 1"},
+    {en:"1, 2 and 4 only", hi:"केवल 1, 2 और 4"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:1,
+  exp_en:"Statements 1, 2 & 4 are correct. Statement 3 is wrong — fungi are heterotrophic and cannot perform photosynthesis, as they lack chlorophyll.",
+  exp_hi:"कथन 1, 2 और 4 सही हैं। कथन 3 गलत है — कवक विषमपोषी होते हैं और प्रकाश संश्लेषण नहीं कर सकते, क्योंकि इनमें क्लोरोफिल नहीं होता।"
+},
+{
+  en:"Consider the following statements about Plantae:\n1. Plants are autotrophic.\n2. Cell wall in plants is made of cellulose.\n3. Tracheids and vessels are components of Phloem.",
+  hi:"पादप जगत (Plantae) के बारे में निम्नलिखित कथन:\n1. पौधे स्वपोषी होते हैं।\n2. पौधों में कोशिका भित्ति सेल्युलोज की बनी होती है।\n3. ट्रेकिड्स और वेसल्स फ्लोएम के घटक हैं।",
+  options:[
+    {en:"1 and 2 only", hi:"केवल 1 और 2"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1 and 3 only", hi:"केवल 1 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:0,
+  exp_en:"Statements 1 & 2 are correct. Statement 3 is wrong — tracheids and vessels are components of Xylem, not Phloem.",
+  exp_hi:"कथन 1 और 2 सही हैं। कथन 3 गलत है — ट्रेकिड्स और वेसल्स जाइलम (Xylem) के घटक हैं, फ्लोएम के नहीं।"
+},
+{
+  en:"Consider the following statements about Animalia:\n1. Animals are eukaryotic.\n2. Animals lack cell wall.\n3. Arthropoda is the largest phylum in the Animal Kingdom.\n4. Animals show autotrophic nutrition.",
+  hi:"प्राणि जगत (Animalia) के बारे में निम्नलिखित कथन:\n1. जन्तु यूकैरियोटिक होते हैं।\n2. जन्तुओं में कोशिका भित्ति का अभाव होता है।\n3. आर्थ्रोपोडा, प्राणि जगत का सबसे बड़ा संघ है।\n4. जन्तु स्वपोषी पोषण प्रदर्शित करते हैं।",
+  options:[
+    {en:"1 only", hi:"केवल 1"},
+    {en:"1, 2 and 3 only", hi:"केवल 1, 2 और 3"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:1,
+  exp_en:"Statements 1, 2 & 3 are correct. Statement 4 is wrong — animals show heterotrophic nutrition, not autotrophic.",
+  exp_hi:"कथन 1, 2 और 3 सही हैं। कथन 4 गलत है — जन्तु विषमपोषी पोषण प्रदर्शित करते हैं, स्वपोषी नहीं।"
+},
+{
+  en:"Consider the following statements about Cyanobacteria:\n1. They are photosynthetic.\n2. They are prokaryotic & unicellular.\n3. Cyanobacteria perform photosynthesis in membrane folds called thylakoids.",
+  hi:"सायनोबैक्टीरिया (Cyanobacteria) के बारे में निम्नलिखित कथन:\n1. ये प्रकाश संश्लेषक होते हैं।\n2. ये प्रोकैरियोटिक और एककोशिकीय होते हैं।\n3. सायनोबैक्टीरिया थाइलाकोइड्स नामक झिल्ली की परतों में प्रकाश संश्लेषण करते हैं।",
+  options:[
+    {en:"1 only", hi:"केवल 1"},
+    {en:"1 and 2 only", hi:"केवल 1 और 2"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:3,
+  exp_en:"All three statements are correct — Cyanobacteria are photosynthetic, prokaryotic and unicellular, and photosynthesise in thylakoid membrane folds.",
+  exp_hi:"तीनों कथन सही हैं — सायनोबैक्टीरिया प्रकाश संश्लेषक, प्रोकैरियोटिक और एककोशिकीय होते हैं, तथा थाइलाकोइड्स में प्रकाश संश्लेषण करते हैं।"
+},
+{
+  en:"Consider the following statements regarding Euglena:\n1. It is a unicellular organism belonging to Protista.\n2. It shows mixotrophic nutrition.\n3. It is a connecting link between Plant and Animal.",
+  hi:"यूग्लीना (Euglena) के संबंध में निम्नलिखित कथन:\n1. यह प्रोटिस्टा से संबंधित एक एककोशिकीय जीव है।\n2. यह मिश्रपोषी पोषण प्रदर्शित करता है।\n3. यह पौधों और जंतुओं के बीच की एक संयोजक कड़ी है।",
+  options:[
+    {en:"1 only", hi:"केवल 1"},
+    {en:"1 and 2 only", hi:"केवल 1 और 2"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:3,
+  exp_en:"All three statements about Euglena are correct — it is a unicellular Protist, mixotrophic, and is often called a connecting link between plants and animals.",
+  exp_hi:"यूग्लीना के बारे में तीनों कथन सही हैं — यह एककोशिकीय प्रोटिस्ट है, मिश्रपोषी है, और इसे पौधों व जंतुओं के बीच की संयोजक कड़ी कहा जाता है।"
+},
+{
+  en:"Consider the following statements about bacteria:\n1. Reproduce mainly by binary fission.\n2. Possess a true nucleus & are mostly autotrophic.\n3. They are included under Monera.",
+  hi:"बैक्टीरिया के बारे में निम्नलिखित कथन:\n1. ये मुख्य रूप से द्विखंडन द्वारा प्रजनन करते हैं।\n2. इनमें वास्तविक केंद्रक होता है और ये अधिकतर स्वपोषी होते हैं।\n3. इन्हें मोनेरा के अंतर्गत शामिल किया गया है।",
+  options:[
+    {en:"1 and 3 only", hi:"केवल 1 और 3"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1 only", hi:"केवल 1"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:0,
+  exp_en:"Statements 1 & 3 are correct. Statement 2 is wrong — bacteria lack a true (membrane-bound) nucleus and are mostly heterotrophic, not autotrophic.",
+  exp_hi:"कथन 1 और 3 सही हैं। कथन 2 गलत है — बैक्टीरिया में वास्तविक (झिल्ली-बद्ध) केंद्रक नहीं होता और ये अधिकतर विषमपोषी होते हैं, स्वपोषी नहीं।"
+},
+{
+  en:"Consider the following statements:\n1. Slime moulds are included in Protista.\n2. They show a plasmodial stage.\n3. They are prokaryotic.",
+  hi:"निम्नलिखित कथनों पर विचार कीजिए:\n1. अवपंक कवक (Slime moulds) को प्रोटिस्टा में शामिल किया गया है।\n2. ये प्लाज्मोडियल चरण प्रदर्शित करते हैं।\n3. ये प्रोकैरियोटिक होते हैं।",
+  options:[
+    {en:"1 only", hi:"केवल 1"},
+    {en:"1 and 2 only", hi:"केवल 1 और 2"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:1,
+  exp_en:"Statements 1 & 2 are correct. Statement 3 is wrong — slime moulds are eukaryotic, not prokaryotic.",
+  exp_hi:"कथन 1 और 2 सही हैं। कथन 3 गलत है — अवपंक कवक यूकैरियोटिक होते हैं, प्रोकैरियोटिक नहीं।"
+},
+{
+  en:"Consider the following statements about fungi:\n1. They store food as glycogen.\n2. They act as decomposers.\n3. Fungi can be unicellular or multicellular.",
+  hi:"कवक के बारे में निम्नलिखित कथन:\n1. ये भोजन को ग्लाइकोजन के रूप में संचित करते हैं।\n2. ये अपघटक के रूप में कार्य करते हैं।\n3. कवक एककोशिकीय या बहुकोशिकीय हो सकते हैं।",
+  options:[
+    {en:"1 and 2 only", hi:"केवल 1 और 2"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1 only", hi:"केवल 1"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:3,
+  exp_en:"All three statements are correct — fungi store food as glycogen, act as decomposers, and can be unicellular (e.g. yeast) or multicellular.",
+  exp_hi:"तीनों कथन सही हैं — कवक भोजन को ग्लाइकोजन के रूप में संचित करते हैं, अपघटक का कार्य करते हैं, और एककोशिकीय (जैसे यीस्ट) या बहुकोशिकीय हो सकते हैं।"
+},
+{
+  en:"Consider the following statements about Protista:\n1. Act as a link between plants and animals.\n2. They are prokaryotic organisms.\n3. Show diverse modes of nutrition.",
+  hi:"प्रोटिस्टा के बारे में निम्नलिखित कथन:\n1. यह पौधों और जानवरों के बीच एक कड़ी के रूप में कार्य करता है।\n2. ये प्रोकैरियोटिक जीव हैं।\n3. ये पोषण के विभिन्न तरीके प्रदर्शित करते हैं।",
+  options:[
+    {en:"1 and 3 only", hi:"केवल 1 और 3"},
+    {en:"1 and 2 only", hi:"केवल 1 और 2"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:0,
+  exp_en:"Statements 1 & 3 are correct. Statement 2 is wrong — Protists are eukaryotic organisms, not prokaryotic.",
+  exp_hi:"कथन 1 और 3 सही हैं। कथन 2 गलत है — प्रोटिस्ट यूकैरियोटिक जीव हैं, प्रोकैरियोटिक नहीं।"
+},
+{
+  en:"Consider the following statements:\n1. Viruses are included in the five-kingdom classification.\n2. Viruses are acellular.\n3. Viruses are obligate parasites.",
+  hi:"निम्नलिखित कथनों पर विचार कीजिए:\n1. विषाणु पाँच जगत वर्गीकरण में शामिल हैं।\n2. विषाणु अकोशिकीय होते हैं।\n3. विषाणु अविकल्पी परजीवी होते हैं।",
+  options:[
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1 and 2 only", hi:"केवल 1 और 2"},
+    {en:"1 and 3 only", hi:"केवल 1 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:0,
+  exp_en:"Statements 2 & 3 are correct. Statement 1 is wrong — viruses are NOT included in the five-kingdom classification since they are not considered truly living/cellular.",
+  exp_hi:"कथन 2 और 3 सही हैं। कथन 1 गलत है — विषाणु पाँच जगत वर्गीकरण में शामिल नहीं हैं क्योंकि उन्हें वास्तविक सजीव/कोशिकीय नहीं माना जाता।"
+},
+{
+  en:"Consider the following statements about Porifera:\n1. They possess pores all over the body.\n2. Sycon, Spongilla, Euplectella are examples of it.\n3. They are bilaterally symmetrical.",
+  hi:"पोरिफेरा (Porifera) के बारे में निम्नलिखित कथन:\n1. इनके पूरे शरीर पर छिद्र होते हैं।\n2. साइकॉन, स्पोंजिला, यूप्लेक्टेला इसके उदाहरण हैं।\n3. ये द्विपार्श्व रूप से सममित होते हैं।",
+  options:[
+    {en:"1 only", hi:"केवल 1"},
+    {en:"1 and 2 only", hi:"केवल 1 और 2"},
+    {en:"2 and 3 only", hi:"केवल 2 और 3"},
+    {en:"1, 2 and 3", hi:"1, 2 और 3"}
+  ],
+  correct:1,
+  exp_en:"Statements 1 & 2 are correct. Statement 3 is wrong — Porifera (sponges) are asymmetrical, not bilaterally symmetrical.",
+  exp_hi:"कथन 1 और 2 सही हैं। कथन 3 गलत है — पोरिफेरा (स्पंज) असममित होते हैं, द्विपार्श्व सममित नहीं।"
+}
+];
+
+/* -------- rotating game-show taglines & motivational lines -------- */
+const TAGLINES = [
+  "🔥 BRAIN BLAST!",
+  "🧠 CAN YOU CRACK IT?",
+  "🎯 EXAM TRAP!",
+  "🚨 DON'T FALL FOR THE TRAP!",
+  "🏆 BOSS LEVEL!"
+];
+const MOTIVATE = [
+  "ध्यान से सोचिए… इसमें एक ट्रैप है! 👀",
+  "जवाब लॉक करने से पहले अच्छी तरह सोच लें! 🔒",
+  "जल्दबाजी न करें—हर विकल्प ध्यान से पढ़ें! 🎯",
+  "आपकी मेहनत रंग लाएगी—फोकस बनाए रखें! 💪",
+  "एक-एक अंक मायने रखता है, ध्यान से चुनें! ⭐"
+];
+
+const TOTAL_TIME = 30;
+let state = {
+  idx:0, score:0, correctCount:0, wrongCount:0,
+  answered:false, timer:null, timeLeft:TOTAL_TIME, name:""
+};
+
+const app = document.getElementById('app');
+
+function shuffleTag(arr, i){ return arr[i % arr.length]; }
+
+function renderStart(){
+  app.innerHTML = `
+    <div class="hero">
+      <h1>ROUTINE-2 TEST</h1>
+      <p>Bilingual Game-Show Quiz · 30 Questions · Bihar Police & Competitive Exam Prep</p>
+      <div class="badge-row">
+        <span class="pill">⏱️ 30 sec / question</span>
+        <span class="pill">🌐 English + हिंदी</span>
+        <span class="pill">🏆 Live Scoreboard</span>
+      </div>
+      <input id="nameInput" class="name-input" placeholder="अपना नाम लिखें (optional)" maxlength="24">
+      <div><button class="btn" id="startBtn">🚀 Start Quiz / क्विज़ शुरू करें</button></div>
+    </div>
+  `;
+  document.getElementById('startBtn').onclick = ()=>{
+    state.name = document.getElementById('nameInput').value.trim();
+    state = {...state, idx:0, score:0, correctCount:0, wrongCount:0};
+    renderQuestion();
+  };
+}
+
+function renderQuestion(){
+  clearInterval(state.timer);
+  state.answered = false;
+  state.timeLeft = TOTAL_TIME;
+  const q = QUESTIONS[state.idx];
+  const qn = state.idx + 1;
+  const pct = Math.round((state.idx/QUESTIONS.length)*100);
+
+  let matchHtml = "";
+  if(q.matchTable){
+    matchHtml = `<div style="display:flex; gap:14px; flex-wrap:wrap; margin:6px 0 16px;">
+      <div style="flex:1; min-width:130px;">
+        ${q.matchTable.left.map(l=>`<div style="padding:6px 0; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.12);">${l}</div>`).join('')}
+      </div>
+      <div style="flex:1; min-width:150px;">
+        ${q.matchTable.right.map(r=>`<div style="padding:6px 0; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.12);">${r}</div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  app.innerHTML = `
+    <div class="topbar">
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Q${qn} / ${QUESTIONS.length}</span><span>${pct}%</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="score-box">🏅 ${state.score} pts</div>
+    </div>
+    <div class="timer-ring" id="ring" style="--pct:100">
+      <div class="timer-num" id="timerNum">${TOTAL_TIME}</div>
+    </div>
+    <div class="tagline">${shuffleTag(TAGLINES, state.idx)}</div>
+    <div class="motivate">${shuffleTag(MOTIVATE, state.idx)}</div>
+    <div class="card">
+      <span class="qnum">Q${qn}</span>
+      <p class="q-en">${q.en.replace(/\n/g,'<br>')}</p>
+      <p class="q-hi">${q.hi.replace(/\n/g,'<br>')}</p>
+      ${matchHtml}
+      <div class="options" id="optionsBox">
+        ${q.options.map((o,i)=>`
+          <button class="opt" data-i="${i}">
+            <span class="k">${String.fromCharCode(65+i)}</span>
+            <span>${o.en} <span style="color:var(--dim);">/ ${o.hi}</span></span>
+          </button>
+        `).join('')}
+      </div>
+      <div id="feedbackBox"></div>
+      <div class="next-row" id="nextRow"></div>
+    </div>
+  `;
+
+  document.querySelectorAll('.opt').forEach(btn=>{
+    btn.onclick = ()=> selectAnswer(parseInt(btn.dataset.i));
+  });
+
+  startTimer();
+}
+
+function startTimer(){
+  const ring = document.getElementById('ring');
+  const num = document.getElementById('timerNum');
+  state.timer = setInterval(()=>{
+    state.timeLeft--;
+    const pct = Math.max(0, Math.round((state.timeLeft/TOTAL_TIME)*100));
+    ring.style.setProperty('--pct', pct);
+    num.textContent = state.timeLeft;
+    if(state.timeLeft <= 8){
+      ring.classList.add('warn'); num.classList.add('warn');
+    }
+    if(state.timeLeft <= 0){
+      clearInterval(state.timer);
+      if(!state.answered) selectAnswer(-1); // time's up, no answer
+    }
+  }, 1000);
+}
+
+function selectAnswer(choice){
+  if(state.answered) return;
+  state.answered = true;
+  clearInterval(state.timer);
+  const q = QUESTIONS[state.idx];
+  const isCorrect = choice === q.correct;
+
+  document.querySelectorAll('.opt').forEach((btn,i)=>{
+    btn.classList.add('disabled');
+    if(i === q.correct) btn.classList.add('correct');
+    else if(i === choice) btn.classList.add('wrong');
+    else btn.classList.add('faded');
+    btn.onclick = null;
+  });
+
+  const fb = document.getElementById('feedbackBox');
+  if(isCorrect){
+    state.score += 10;
+    state.correctCount++;
+    fb.innerHTML = `
+      <div class="feedback correct">
+        <h3>🎉 CORRECT! 🔥</h3>
+        <p><b>Why?</b> ${q.exp_en}</p>
+        <p>${q.exp_hi}</p>
+      </div>`;
+  } else {
+    state.wrongCount++;
+    const correctOpt = q.options[q.correct];
+    fb.innerHTML = `
+      <div class="feedback wrong">
+        <h3>${choice===-1 ? "⏰ TIME'S UP!" : "❌ NOT QUITE!"}</h3>
+        <p>🏆 <b>Correct Answer:</b> ${String.fromCharCode(65+q.correct)} — ${correctOpt.en} / ${correctOpt.hi}</p>
+        <p>📚 <b>Why?</b> ${q.exp_en}</p>
+        <p>${q.exp_hi}</p>
+      </div>`;
+  }
+
+  const nextRow = document.getElementById('nextRow');
+  const isLast = state.idx === QUESTIONS.length - 1;
+  nextRow.innerHTML = `<button class="btn" id="nextBtn">${isLast ? '🏁 Finish Quiz' : '➡️ Next Question'}</button>`;
+  document.getElementById('nextBtn').onclick = ()=>{
+    if((state.idx+1) % 5 === 0){
+      showScoreboard(isLast);
+    } else if(isLast){
+      renderFinal();
+    } else {
+      state.idx++;
+      renderQuestion();
+    }
+  };
+}
+
+function showScoreboard(isLast){
+  const total = state.correctCount + state.wrongCount;
+  const acc = total ? Math.round((state.correctCount/total)*100) : 0;
+  let comment;
+  if(acc >= 80) comment = "🔥 You're on fire! Keep the momentum going!";
+  else if(acc >= 50) comment = "⚡ Solid progress! The traps are getting harder — stay sharp!";
+  else comment = "💪 Tough round! Time to fight back on the next set!";
+
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.innerHTML = `
+    <div class="board">
+      <h2>🏆 QUIZ SCOREBOARD</h2>
+      <div class="stat-row">
+        <div class="stat ok"><div class="num">${state.correctCount}</div><div class="lbl">✅ Correct</div></div>
+        <div class="stat no"><div class="num">${state.wrongCount}</div><div class="lbl">❌ Incorrect</div></div>
+        <div class="stat acc"><div class="num">${acc}%</div><div class="lbl">🎯 Accuracy</div></div>
+      </div>
+      <p class="comment">${comment}</p>
+      <button class="btn" id="continueBtn">${isLast ? '🏁 See Final Result' : 'Continue ➡️'}</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  document.getElementById('continueBtn').onclick = ()=>{
+    overlay.remove();
+    if(isLast){
+      renderFinal();
+    } else {
+      state.idx++;
+      renderQuestion();
+    }
+  };
+}
+
+function renderFinal(){
+  const total = QUESTIONS.length;
+  const acc = Math.round((state.correctCount/total)*100);
+  let grade, gmsg;
+  if(acc >= 85){grade="🏆 TOPPER"; gmsg="बेहतरीन! आप परीक्षा के लिए पूरी तरह तैयार हैं!";}
+  else if(acc >= 65){grade="🥈 STRONG"; gmsg="बहुत अच्छा प्रदर्शन! थोड़ी और प्रैक्टिस से टॉप पर पहुँचेंगे।";}
+  else if(acc >= 40){grade="🥉 GROWING"; gmsg="अच्छी शुरुआत! कमजोर टॉपिक्स पर दोबारा फोकस करें।";}
+  else {grade="📘 KEEP GOING"; gmsg="निराश मत होइए—रिवीजन करें और दोबारा अटेम्प्ट करें!";}
+
+  app.innerHTML = `
+    <div class="hero final">
+      <h2>🎬 QUIZ COMPLETE!</h2>
+      <p style="color:var(--dim);">${state.name ? state.name + ', y' : 'Y'}our final results are in</p>
+      <div class="grade">${grade}</div>
+      <div class="stat-row" style="max-width:360px; margin:0 auto;">
+        <div class="stat ok"><div class="num">${state.correctCount}</div><div class="lbl">✅ Correct</div></div>
+        <div class="stat no"><div class="num">${state.wrongCount}</div><div class="lbl">❌ Incorrect</div></div>
+        <div class="stat acc"><div class="num">${acc}%</div><div class="lbl">🎯 Accuracy</div></div>
+      </div>
+      <p style="margin-top:14px; font-size:16px;">🏅 Total Score: <b style="color:var(--gold);">${state.score} pts</b></p>
+      <p style="color:var(--cream); max-width:420px; margin:14px auto;">${gmsg}</p>
+      <button class="btn" id="restartBtn">🔄 Restart Quiz / फिर से शुरू करें</button>
+    </div>
+  `;
+  document.getElementById('restartBtn').onclick = renderStart;
+}
+
+renderStart();
+</script>
+</body>
+</html>
